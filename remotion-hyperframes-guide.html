@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remotion + HyperFrames · Гайд по установке</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c10;
+  --bg1: #0f1318;
+  --bg2: #141920;
+  --border: #1e2530;
+  --t1: #f0f4ff;
+  --t2: #b8c4d8;
+  --t3: #6b7a94;
+  --r: #FF4D6D;      /* Remotion — горячий розово-красный */
+  --h: #00D4AA;      /* HyperFrames — кибер-тил */
+  --gold: #F5A623;
+  --ok: #22C55E;
+  --warn: #F59E0B;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--t1);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── GRID BG ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,212,170,.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,.018) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 100px; position: relative; z-index: 1; }
+
+/* ── HERO ── */
+.hero {
+  padding: 80px 0 60px;
+  text-align: center;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 300px;
+  background: radial-gradient(ellipse at center, rgba(255,77,109,.12) 0%, rgba(0,212,170,.08) 50%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 600 11px/1 var(--mono);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(245,166,35,.3);
+  background: rgba(245,166,35,.07);
+  border-radius: 4px; padding: 7px 14px;
+  margin-bottom: 28px;
+}
+
+.hero h1 {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+
+.hero h1 .r { color: var(--r); }
+.hero h1 .h { color: var(--h); }
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--t2);
+  max-width: 560px;
+  margin: 0 auto 40px;
+}
+
+/* ── TOC ── */
+.toc {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 60px;
+}
+
+.toc-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: var(--t2);
+  font-size: 13px;
+  transition: all .2s;
+}
+
+.toc-item:hover { border-color: var(--h); color: var(--t1); transform: translateY(-1px); }
+.toc-item .num { font: 700 11px/1 var(--mono); color: var(--t3); min-width: 24px; }
+.toc-item.r-item:hover { border-color: var(--r); }
+
+/* ── SECTION ── */
+.section { margin-bottom: 56px; }
+
+.sec-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sec-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+
+.sec-icon.r { background: rgba(255,77,109,.12); border: 1px solid rgba(255,77,109,.25); }
+.sec-icon.h { background: rgba(0,212,170,.12); border: 1px solid rgba(0,212,170,.25); }
+.sec-icon.both { background: rgba(245,166,35,.1); border: 1px solid rgba(245,166,35,.25); }
+
+.sec-header h2 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+.sec-header .sec-sub { font-size: 13px; color: var(--t3); margin-top: 3px; }
+
+/* ── STEP ── */
+.step {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.step-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.step-num {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font: 700 12px/1 var(--mono);
+  flex-shrink: 0;
+}
+
+.step-num.r { background: rgba(255,77,109,.15); color: var(--r); }
+.step-num.h { background: rgba(0,212,170,.15); color: var(--h); }
+.step-num.g { background: rgba(34,197,94,.15); color: var(--ok); }
+
+.step-title { font-size: 15px; font-weight: 600; }
+.step-desc { font-size: 12px; color: var(--t3); margin-top: 2px; }
+
+.step-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── CODE ── */
+.code-block {
+  background: #070a0e;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.code-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid var(--border);
+}
+
+.code-lang {
+  font: 600 10px/1 var(--mono);
+  letter-spacing: .15em; text-transform: uppercase;
+  color: var(--t3);
+}
+
+.copy-btn {
+  font: 600 10px/1 var(--mono);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--h); background: rgba(0,212,170,.08);
+  border: 1px solid rgba(0,212,170,.2);
+  border-radius: 4px; padding: 5px 10px;
+  cursor: pointer; transition: all .15s;
+}
+
+.copy-btn:hover { background: rgba(0,212,170,.18); }
+.copy-btn.copied { color: var(--ok); border-color: rgba(34,197,94,.3); background: rgba(34,197,94,.08); }
+
+pre {
+  padding: 16px;
+  font: 500 13px/1.7 var(--mono);
+  color: var(--t2);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+pre .cmd { color: #7DD3FC; }
+pre .comment { color: var(--t3); font-style: italic; }
+pre .ok { color: var(--ok); }
+pre .path { color: #C4B5FD; }
+pre .val { color: #FCA5A5; }
+
+/* ── NOTE / WARN / TIP ── */
+.note, .warn, .tip {
+  display: flex; gap: 12px; align-items: flex-start;
+  border-radius: 7px; padding: 13px 16px;
+  font-size: 13.5px; line-height: 1.5;
+}
+
+.note { background: rgba(0,212,170,.07); border: 1px solid rgba(0,212,170,.2); color: var(--t2); }
+.warn { background: rgba(245,158,11,.07); border: 1px solid rgba(245,158,11,.2); color: var(--t2); }
+.tip  { background: rgba(139,92,246,.07); border: 1px solid rgba(139,92,246,.2); color: var(--t2); }
+
+.note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── CLICK GUIDE ── */
+.click-guide {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+}
+
+.click-step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+
+.click-step:last-child { border-bottom: 0; }
+
+.click-arrow {
+  width: 24px; height: 24px;
+  background: rgba(0,212,170,.12);
+  border: 1px solid rgba(0,212,170,.25);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; margin-top: 1px;
+}
+
+.click-arrow.r {
+  background: rgba(255,77,109,.12);
+  border-color: rgba(255,77,109,.25);
+}
+
+.click-text { font-size: 13.5px; color: var(--t2); line-height: 1.5; }
+.click-text b { color: var(--t1); }
+.click-text code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--h);
+  background: rgba(0,212,170,.08);
+  border: 1px solid rgba(0,212,170,.15);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.click-text code.r {
+  color: var(--r);
+  background: rgba(255,77,109,.08);
+  border-color: rgba(255,77,109,.15);
+}
+
+/* ── COMPARISON TABLE ── */
+.compare {
+  border: 1px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  margin-top: 8px;
+}
+
+.compare table { width: 100%; border-collapse: collapse; }
+
+.compare th {
+  padding: 12px 16px;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--t3);
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.compare th.r-col { color: var(--r); }
+.compare th.h-col { color: var(--h); }
+
+.compare td {
+  padding: 11px 16px;
+  font-size: 13px; color: var(--t2);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.compare tr:last-child td { border-bottom: 0; }
+.compare tr:hover td { background: rgba(255,255,255,.015); }
+.compare td:first-child { color: var(--t3); font-size: 12px; font-family: var(--mono); white-space: nowrap; }
+
+.yes { color: var(--ok); font-weight: 700; }
+.no  { color: var(--r); }
+.part { color: var(--warn); }
+
+/* ── VISUAL MOCKUP ── */
+.mockup {
+  border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  background: #070a0e;
+  margin: 4px 0;
+}
+
+.mockup-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid var(--border);
+}
+
+.dot-r { width: 10px; height: 10px; border-radius: 50%; background: #FF5F57; }
+.dot-y { width: 10px; height: 10px; border-radius: 50%; background: #FEBC2E; }
+.dot-g { width: 10px; height: 10px; border-radius: 50%; background: #28C840; }
+
+.mockup-title {
+  margin-left: auto; margin-right: auto;
+  font: 500 11px/1 var(--mono); color: var(--t3);
+  letter-spacing: .08em;
+}
+
+.mockup-body { padding: 20px; }
+
+/* ── TERMINAL MOCKUP ── */
+.terminal { background: #060810; }
+.terminal .mockup-body {
+  font: 500 12.5px/1.8 var(--mono);
+  color: var(--t2);
+  padding: 16px 20px;
+}
+
+.t-prompt { color: var(--h); }
+.t-cmd { color: var(--t1); }
+.t-out { color: var(--t3); }
+.t-ok { color: var(--ok); }
+.t-warn { color: var(--warn); }
+.t-blue { color: #7DD3FC; }
+
+/* ── CONNECTOR MOCKUP ── */
+.connector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 16px;
+}
+
+.connector-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 12px;
+  background: var(--bg1);
+  text-align: center;
+}
+
+.connector-card.active { border-color: rgba(0,212,170,.4); background: rgba(0,212,170,.05); }
+.connector-card.inactive { opacity: .4; }
+
+.conn-icon { font-size: 24px; margin-bottom: 8px; }
+.conn-name { font-size: 12px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
+.conn-status {
+  font: 600 9px/1 var(--mono);
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 8px; border-radius: 3px;
+  display: inline-block;
+}
+.conn-status.on { color: var(--ok); background: rgba(34,197,94,.1); }
+.conn-status.off { color: var(--t3); background: rgba(255,255,255,.05); }
+
+/* ── SKILLS LIST ── */
+.skills-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+
+.skill-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px; color: var(--t2);
+}
+
+.skill-item .si { font-size: 15px; }
+.skill-item b { color: var(--t1); display: block; font-size: 12.5px; }
+.skill-item span { font-size: 11px; color: var(--t3); }
+
+/* ── FLOW DIAGRAM ── */
+.flow {
+  display: flex; align-items: center; gap: 0;
+  padding: 16px; flex-wrap: wrap; justify-content: center;
+}
+
+.flow-node {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 16px;
+  font-size: 12.5px; font-weight: 600;
+  text-align: center; min-width: 110px;
+}
+
+.flow-node.r { border-color: rgba(255,77,109,.4); color: var(--r); }
+.flow-node.h { border-color: rgba(0,212,170,.4); color: var(--h); }
+.flow-node.g { border-color: rgba(34,197,94,.4); color: var(--ok); }
+.flow-node small { display: block; font-size: 10px; font-weight: 400; color: var(--t3); margin-top: 3px; }
+
+.flow-arrow {
+  font-size: 18px; color: var(--t3);
+  padding: 0 6px; flex-shrink: 0;
+}
+
+/* ── BADGE PILLS ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font: 600 10px/1 var(--mono);
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 9px; border-radius: 4px;
+  border: 1px solid currentColor;
+}
+
+.pill.r { color: var(--r); background: rgba(255,77,109,.08); }
+.pill.h { color: var(--h); background: rgba(0,212,170,.08); }
+.pill.g { color: var(--ok); background: rgba(34,197,94,.08); }
+.pill.w { color: var(--warn); background: rgba(245,158,11,.08); }
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px; background: var(--border);
+  margin: 48px 0; position: relative;
+}
+
+.divider::after {
+  content: attr(data-label);
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg);
+  padding: 0 16px;
+  font: 600 10px/1 var(--mono);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--t3);
+}
+
+/* ── RESULT CARD ── */
+.result-card {
+  border: 1px solid rgba(34,197,94,.3);
+  border-radius: 10px;
+  background: rgba(34,197,94,.05);
+  padding: 20px 24px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+
+.result-icon { font-size: 28px; flex-shrink: 0; }
+.result-title { font-size: 16px; font-weight: 700; color: var(--ok); margin-bottom: 6px; }
+.result-text { font-size: 13.5px; color: var(--t2); line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 32px; margin-top: 60px;
+  text-align: center;
+  font: 500 12px/1.7 var(--mono);
+  color: var(--t3);
+  letter-spacing: .06em;
+}
+
+footer b { color: var(--t2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .toc { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .connector-grid { grid-template-columns: 1fr 1fr; }
+  .flow { gap: 4px; }
+  .flow-node { min-width: 80px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-badge">⚡ MDTSynaps · Video Factory · 2026</div>
+  <h1><span class="r">Remotion</span> + <span class="h">HyperFrames</span><br>Полный гайд</h1>
+  <p class="hero-sub">Пошаговая инструкция: от нуля до первого сгенерированного ролика. Для начинающих — без пропущенных шагов.</p>
+</div>
+
+<!-- ═══ TOC ═══ -->
+<div class="toc">
+  <a href="#compare" class="toc-item">
+    <span class="num">00</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">Сравнение инструментов</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Что выбрать и почему</div></div>
+  </a>
+  <a href="#hyperframes" class="toc-item">
+    <span class="num" style="color:var(--h)">01</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">HyperFrames MCP</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Подключить в Claude.ai за 3 клика</div></div>
+  </a>
+  <a href="#remotion" class="toc-item r-item">
+    <span class="num" style="color:var(--r)">02</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">Remotion локально</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Node.js + ffmpeg + скиллы</div></div>
+  </a>
+  <a href="#workflow" class="toc-item">
+    <span class="num" style="color:var(--gold)">03</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">Рабочий процесс</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Как делать ролики каждый день</div></div>
+  </a>
+  <a href="#first-video" class="toc-item">
+    <span class="num" style="color:var(--ok)">04</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">Первый ролик</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Пример промпта и результат</div></div>
+  </a>
+  <a href="#cheatsheet" class="toc-item">
+    <span class="num">05</span>
+    <div><div style="font-weight:600;font-size:13px;color:var(--t1)">Шпаргалка</div>
+    <div style="font-size:11px;color:var(--t3);margin-top:2px">Команды и ссылки</div></div>
+  </a>
+</div>
+
+<!-- ═══ 00. СРАВНЕНИЕ ═══ -->
+<div class="section" id="compare">
+  <div class="sec-header">
+    <div class="sec-icon both">⚖️</div>
+    <div>
+      <h2>00 · Что такое и зачем</h2>
+      <div class="sec-sub">Разберись один раз — потом не путайся</div>
+    </div>
+  </div>
+
+  <div class="compare">
+    <table>
+      <thead>
+        <tr>
+          <th>Критерий</th>
+          <th class="r-col">🔴 Remotion</th>
+          <th class="h-col">🟢 HyperFrames</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Где работает</td>
+          <td>На твоём ПК (Node.js)</td>
+          <td>Прямо в Claude.ai (облако)</td>
+        </tr>
+        <tr>
+          <td>Что пишем</td>
+          <td>React-компоненты (JSX)</td>
+          <td>HTML + CSS + JS</td>
+        </tr>
+        <tr>
+          <td>Claude рендерит сам</td>
+          <td class="no">❌ Только пишет код</td>
+          <td class="yes">✅ Рендерит в чате</td>
+        </tr>
+        <tr>
+          <td>Нужен ffmpeg</td>
+          <td class="warn">⚠️ Да, обязательно</td>
+          <td class="yes">✅ Нет</td>
+        </tr>
+        <tr>
+          <td>Скорость ролика</td>
+          <td>~4–10 мин (рендер + сборка)</td>
+          <td>~60 сек</td>
+        </tr>
+        <tr>
+          <td>Стоимость</td>
+          <td class="yes">Бесплатно (≤3 чел.)</td>
+          <td>Кредиты HeyGen</td>
+        </tr>
+        <tr>
+          <td>Массовая генерация из CSV</td>
+          <td class="yes">✅ Идеально</td>
+          <td class="warn">⚠️ Дорого в кредитах</td>
+        </tr>
+        <tr>
+          <td>Лучше для</td>
+          <td>Batch 100+ роликов по шаблону</td>
+          <td>Быстрые Reels по запросу</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:14px">
+    <div class="tip">
+      <span class="note-icon">💡</span>
+      <div><b style="color:var(--t1)">Простое правило:</b> хочешь ролик прямо сейчас → <span class="pill h">HyperFrames</span>. Хочешь генерировать 100 роликов из Excel бесплатно → <span class="pill r">Remotion</span>. Лучше всего использовать оба.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider" data-label="УСТАНОВКА"></div>
+
+<!-- ═══ 01. HYPERFRAMES ═══ -->
+<div class="section" id="hyperframes">
+  <div class="sec-header">
+    <div class="sec-icon h">🟢</div>
+    <div>
+      <h2>01 · HyperFrames MCP — подключение</h2>
+      <div class="sec-sub">3 клика прямо в Claude.ai — никакого кода</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num h">1</div>
+      <div>
+        <div class="step-title">Открой настройки Claude.ai</div>
+        <div class="step-desc">Нужен аккаунт HeyGen (бесплатный на start.heygen.com)</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="click-guide">
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Зайди на <b>claude.ai</b> → в левом нижнем углу нажми на иконку профиля</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Выбери <code>Settings</code> (Настройки)</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Открой вкладку <code>Connectors</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Нажми кнопку <b>Add Connector</b> → <b>Browse</b></div>
+        </div>
+      </div>
+
+      <!-- Mockup: Connector список -->
+      <div class="mockup">
+        <div class="mockup-bar">
+          <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+          <div class="mockup-title">claude.ai / Settings / Connectors</div>
+        </div>
+        <div class="mockup-body">
+          <div style="font-size:12px;color:var(--t3);font-family:var(--mono);margin-bottom:12px;">AVAILABLE CONNECTORS</div>
+          <div class="connector-grid">
+            <div class="connector-card active">
+              <div class="conn-icon">🎬</div>
+              <div class="conn-name">HyperFrames</div>
+              <div class="conn-status on">Connected</div>
+            </div>
+            <div class="connector-card active">
+              <div class="conn-icon">⚡</div>
+              <div class="conn-name">Higgsfield</div>
+              <div class="conn-status on">Connected</div>
+            </div>
+            <div class="connector-card active">
+              <div class="conn-icon">▲</div>
+              <div class="conn-name">Vercel</div>
+              <div class="conn-status on">Connected</div>
+            </div>
+            <div class="connector-card inactive">
+              <div class="conn-icon">📧</div>
+              <div class="conn-name">Gmail</div>
+              <div class="conn-status off">Not connected</div>
+            </div>
+            <div class="connector-card inactive">
+              <div class="conn-icon">📅</div>
+              <div class="conn-name">Google Cal</div>
+              <div class="conn-status off">Not connected</div>
+            </div>
+            <div class="connector-card inactive">
+              <div class="conn-icon">🎨</div>
+              <div class="conn-name">Canva</div>
+              <div class="conn-status off">Not connected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num h">2</div>
+      <div>
+        <div class="step-title">Найди и подключи HyperFrames</div>
+        <div class="step-desc">В поиске набери "HyperFrames" или "HeyGen"</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="click-guide">
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">В строке поиска коннекторов введи <code>HyperFrames</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Нажми <b>Connect</b> на карточке <b>HyperFrames by HeyGen</b></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Откроется окно <b>OAuth авторизации</b> — нажми <b>Allow</b> (Разрешить)</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">→</div>
+          <div class="click-text">Статус изменится на <b style="color:var(--ok)">Connected ✓</b> — готово!</div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-icon">ℹ️</span>
+        <div>Если нет аккаунта HeyGen — зарегистрируйся на <b style="color:var(--h)">app.heygen.com</b>. Бесплатный план даёт кредиты для старта. Прямая ссылка на MCP: <b style="color:var(--h)">https://mcp.heygen.com/mcp/hyperframes</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num g">✓</div>
+      <div>
+        <div class="step-title">Проверка — попроси Claude создать видео</div>
+        <div class="step-desc">Вернись в чат и проверь что коннектор работает</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">Промпт в чат</span>
+        </div>
+        <pre><span class="cmd">Создай тестовый 10-секундный вертикальный ролик Reels 9:16
+с анимированным текстом "Контент-завод запущен 🚀"
+тёмный стиль, неоновые акценты</span></pre>
+      </div>
+
+      <div class="result-card">
+        <div class="result-icon">🎬</div>
+        <div>
+          <div class="result-title">Что произойдёт</div>
+          <div class="result-text">
+            Claude вызовет <code style="font-family:var(--mono);font-size:12px;color:var(--h)">compose</code> → в чате появится виджет-плеер с превью → нажми <b>Render</b> → получишь ссылку на MP4.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px">
+    <div style="font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:10px;">ИНСТРУМЕНТЫ HYPERFRAMES В CLAUDE</div>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <span class="si">✏️</span>
+        <div><b>compose</b><span>Создать / редактировать композицию</span></div>
+      </div>
+      <div class="skill-item">
+        <span class="si">▶️</span>
+        <div><b>get_project</b><span>Открыть проект с плеером</span></div>
+      </div>
+      <div class="skill-item">
+        <span class="si">🎥</span>
+        <div><b>render_video</b><span>Рендер в MP4 / WebM / MOV</span></div>
+      </div>
+      <div class="skill-item">
+        <span class="si">📋</span>
+        <div><b>list_projects</b><span>Список всех композиций</span></div>
+      </div>
+      <div class="skill-item">
+        <span class="si">⏱️</span>
+        <div><b>get_render_status</b><span>Статус рендера</span></div>
+      </div>
+      <div class="skill-item">
+        <span class="si">💳</span>
+        <div><b>get_credits</b><span>Баланс кредитов</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 02. REMOTION ═══ -->
+<div class="section" id="remotion">
+  <div class="sec-header">
+    <div class="sec-icon r">🔴</div>
+    <div>
+      <h2>02 · Remotion — локальная установка</h2>
+      <div class="sec-sub">Node.js 24 уже установлен — осталось 4 шага</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num r">1</div>
+      <div>
+        <div class="step-title">Установи ffmpeg</div>
+        <div class="step-desc">Обязательная зависимость для рендера MP4</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">PowerShell (Admin)</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="comment"># Проверь есть ли ffmpeg</span>
+<span class="cmd">ffmpeg -version</span>
+
+<span class="comment"># Если нет — установи через winget</span>
+<span class="cmd">winget install ffmpeg</span>
+
+<span class="comment"># Или через Chocolatey</span>
+<span class="cmd">choco install ffmpeg</span>
+
+<span class="comment"># Проверь после установки</span>
+<span class="cmd">ffmpeg -version</span></pre>
+      </div>
+      <div class="warn">
+        <span class="note-icon">⚠️</span>
+        <div>После установки ffmpeg <b>перезапусти PowerShell</b> — иначе команда не найдётся в PATH.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num r">2</div>
+      <div>
+        <div class="step-title">Создай проект Remotion</div>
+        <div class="step-desc">Уже выполнено — папка remotion-factory создана</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">PowerShell</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="comment"># Перейди в папку</span>
+<span class="cmd">cd C:\GitHub-Repositories\remotion-factory</span>
+
+<span class="comment"># Установи зависимости</span>
+<span class="cmd">npm i</span>
+
+<span class="comment"># Запусти превью-студию</span>
+<span class="cmd">npm run dev</span></pre>
+      </div>
+
+      <!-- Terminal mockup -->
+      <div class="mockup terminal">
+        <div class="mockup-bar">
+          <div class="dot-r"></div><div class="dot-y"></div><div class="dot-g"></div>
+          <div class="mockup-title">PowerShell — remotion-factory</div>
+        </div>
+        <div class="mockup-body">
+          <div><span class="t-prompt">PS</span> <span class="t-cmd">npm run dev</span></div>
+          <div class="t-out"></div>
+          <div><span class="t-blue">➜</span> <span class="t-out">Remotion Studio</span></div>
+          <div><span class="t-ok">✓</span> <span class="t-out">Server started on</span> <span class="t-blue">http://localhost:3000</span></div>
+          <div><span class="t-ok">✓</span> <span class="t-out">Watching for file changes...</span></div>
+          <div class="t-out"></div>
+          <div><span class="t-warn">→</span> <span class="t-out">Press</span> <span style="color:var(--t1)">Ctrl+C</span> <span class="t-out">to stop</span></div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="note-icon">🌐</span>
+        <div>После запуска откроется браузер на <b style="color:var(--h)">http://localhost:3000</b> — это Remotion Studio. Здесь видишь превью своих композиций в реальном времени.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num r">3</div>
+      <div>
+        <div class="step-title">Скиллы установлены — что это даёт</div>
+        <div class="step-desc">11 скиллов в ~/.agents/skills/ — Claude Code знает как работать с Remotion</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="skills-grid">
+        <div class="skill-item">
+          <span class="si">🎬</span>
+          <div><b>remotion-create</b><span>Создать новую композицию</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">🖥️</span>
+          <div><b>remotion-render</b><span>Рендер в MP4/WebM</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">📝</span>
+          <div><b>remotion-captions</b><span>Субтитры и титры</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">🎵</span>
+          <div><b>remotion-multimedia</b><span>Аудио и видео треки</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">🗺️</span>
+          <div><b>remotion-maps</b><span>Карты и геоданные</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">📖</span>
+          <div><b>remotion-docs</b><span>Документация inline</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">✅</span>
+          <div><b>remotion-best-practices</b><span>Лучшие практики</span></div>
+        </div>
+        <div class="skill-item">
+          <span class="si">🔧</span>
+          <div><b>remotion-markup</b><span>HTML/SVG разметка</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num r">4</div>
+      <div>
+        <div class="step-title">Рендер первого видео</div>
+        <div class="step-desc">Когда Claude написал код композиции</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">PowerShell</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="comment"># Рендер (в папке remotion-factory)</span>
+<span class="cmd">npx remotion render src/index.ts MyComposition out/video.mp4</span>
+
+<span class="comment"># Вертикальный формат Reels 1080x1920</span>
+<span class="cmd">npx remotion render src/index.ts MyComposition out/reels.mp4 \
+  --width=1080 --height=1920</span>
+
+<span class="comment"># С кастомными props (данные из JSON)</span>
+<span class="cmd">npx remotion render src/index.ts MyComposition out/video.mp4 \
+  --props='{"title":"Мой ролик","color":"#FF4D6D"}'</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 03. WORKFLOW ═══ -->
+<div class="section" id="workflow">
+  <div class="sec-header">
+    <div class="sec-icon both">🔄</div>
+    <div>
+      <h2>03 · Рабочий процесс: контент-завод</h2>
+      <div class="sec-sub">Как использовать оба инструмента вместе</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div style="font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">БЫСТРЫЙ РОЛИК (1 шт, прямо сейчас)</div>
+    <div class="flow">
+      <div class="flow-node h">Идея<small>В чат Claude</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Claude<small>Пишет HTML</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node h">HyperFrames<small>Рендер ~60с</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node g">MP4<small>Ссылка в чате</small></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div style="font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;">МАССОВАЯ ГЕНЕРАЦИЯ (100+ роликов из CSV)</div>
+    <div class="flow">
+      <div class="flow-node">CSV<small>Данные товаров</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">Claude<small>Пишет React код</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node r">Remotion<small>Batch рендер</small></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node g">100 MP4<small>На диске</small></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num g">→</div>
+      <div>
+        <div class="step-title">Промпты для вирусных Reels</div>
+        <div class="step-desc">Скопируй и адаптируй под свою тему</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">Промпт → HyperFrames (через Claude.ai)</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="cmd">Создай вертикальный Reels 9:16, 15 секунд.
+
+Формат "Hook → Pain → Solution → CTA":
+- 0-2с: крючок — большой текст "ТЫ ТЕРЯЕШЬ ДЕНЬГИ НА ПРОСТОЕ"
+- 2-6с: боль — счётчик потерь, красные цифры
+- 6-12с: решение — логотип компании, зелёный текст "Решаем за 24ч"  
+- 12-15с: CTA — "Звони прямо сейчас" + номер телефона
+
+Стиль: тёмный фон, неоновые акценты, агрессивная типографика.
+Добавь shake-анимацию на крючке.</span></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">Промпт → Remotion (через Claude Code)</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="cmd">Напиши Remotion-композицию MyReels в src/MyReels.tsx.
+Формат: 1080x1920, 30fps, 15 секунд.
+
+Props интерфейс:
+- title: string
+- subtitle: string  
+- accentColor: string
+- logoUrl?: string
+
+Сцены:
+1. 0-2с: title влетает снизу с spring() анимацией
+2. 2-8с: subtitle появляется fade-in, счётчик через interpolate()
+3. 8-13с: центральный блок с логотипом, pulse анимация
+4. 13-15с: CTA кнопка, градиентный фон
+
+Зарегистрируй в src/index.ts.</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 04. ПЕРВЫЙ РОЛИК ═══ -->
+<div class="section" id="first-video">
+  <div class="sec-header">
+    <div class="sec-icon h">🚀</div>
+    <div>
+      <h2>04 · Сделай первый ролик прямо сейчас</h2>
+      <div class="sec-sub">HyperFrames готов — просто напиши в чат</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num h">→</div>
+      <div>
+        <div class="step-title">Скопируй промпт ниже и отправь в чат</div>
+        <div class="step-desc">Claude вызовет HyperFrames и покажет плеер</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">Готовый промпт — вставь в чат</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="cmd">Создай смешной вирусный Reels 9:16, 12 секунд.
+
+Тема: "Когда клиент говорит — сделай как у конкурентов"
+
+Сцены:
+- 0-2с: текст "Когда клиент говорит..." (большой, по центру)
+- 2-5с: "Сделай как у Apple" (с emoji 🍎, анимация влетает)
+- 5-8с: "Только дешевле" (красный текст, shake эффект)
+- 8-10с: "И побыстрее" (ещё красный, zoom in)
+- 10-12с: мем-реакция текстом + наш логотип MDTSynaps
+
+Стиль: dark mode, яркие акценты, мемный шрифт.
+Добавь subtitles снизу.</span></pre>
+      </div>
+
+      <div class="click-guide">
+        <div class="click-step">
+          <div class="click-arrow">1</div>
+          <div class="click-text">Дождись появления <b>виджета-плеера</b> в чате (занимает ~60 секунд)</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">2</div>
+          <div class="click-text">Нажми <b>Play</b> в плеере — посмотри превью</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">3</div>
+          <div class="click-text">Если всё нравится — напиши в чат: <code>render this as mp4</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">4</div>
+          <div class="click-text">Получи <b>ссылку на скачивание MP4</b> — готово!</div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">5</div>
+          <div class="click-text">Итеративно правь: <code>сделай текст крупнее</code>, <code>измени цвет на красный</code>, <code>добавь музыку</code></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 05. ШПАРГАЛКА ═══ -->
+<div class="section" id="cheatsheet">
+  <div class="sec-header">
+    <div class="sec-icon both">📋</div>
+    <div>
+      <h2>05 · Шпаргалка</h2>
+      <div class="sec-sub">Все команды и ссылки в одном месте</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num g">⌨</div>
+      <div>
+        <div class="step-title">Remotion — команды</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">PowerShell</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><span class="comment"># Запустить студию превью</span>
+<span class="cmd">cd C:\GitHub-Repositories\remotion-factory && npm run dev</span>
+
+<span class="comment"># Рендер MP4</span>
+<span class="cmd">npx remotion render src/index.ts MyComposition out/video.mp4</span>
+
+<span class="comment"># Рендер Reels (вертикальный)</span>
+<span class="cmd">npx remotion render src/index.ts MyComposition out/reels.mp4 --width=1080 --height=1920</span>
+
+<span class="comment"># Список всех композиций</span>
+<span class="cmd">npx remotion compositions src/index.ts</span>
+
+<span class="comment"># Обновить скиллы</span>
+<span class="cmd">npx hyperframes skills update</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num h">🔗</div>
+      <div>
+        <div class="step-title">Полезные ссылки</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="click-guide">
+        <div class="click-step">
+          <div class="click-arrow r">R</div>
+          <div class="click-text"><b>Remotion Docs</b> — <code class="r">remotion.dev/docs</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow r">R</div>
+          <div class="click-text"><b>Remotion промпты для AI</b> — <code class="r">remotion.dev/prompts</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">H</div>
+          <div class="click-text"><b>HyperFrames MCP гайд</b> — <code>hyperframes.heygen.com/guides/mcp</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">H</div>
+          <div class="click-text"><b>HeyGen аккаунт</b> — <code>app.heygen.com</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">H</div>
+          <div class="click-text"><b>HyperFrames GitHub</b> — <code>github.com/heygen-com/hyperframes</code></div>
+        </div>
+        <div class="click-step">
+          <div class="click-arrow">H</div>
+          <div class="click-text"><b>Claude Connectors</b> — <code>claude.ai</code> → Settings → Connectors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-head">
+      <div class="step-num g">💬</div>
+      <div>
+        <div class="step-title">Команды в чате Claude для HyperFrames</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="code-block">
+        <div class="code-bar">
+          <span class="code-lang">Что писать Claude в чате</span>
+        </div>
+        <pre><span class="comment"># Создать новый ролик</span>
+<span class="cmd">Создай [описание] ролик 9:16, [длительность] секунд</span>
+
+<span class="comment"># Отредактировать</span>
+<span class="cmd">Сделай заголовок крупнее, измени цвет на #FF4D6D</span>
+
+<span class="comment"># Рендер</span>
+<span class="cmd">render this as mp4</span>
+<span class="cmd">render to webm</span>
+
+<span class="comment"># Проверить баланс</span>
+<span class="cmd">сколько кредитов осталось?</span>
+
+<span class="comment"># Список проектов</span>
+<span class="cmd">покажи мои последние видео</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ИТОГ ═══ -->
+<div class="result-card" style="margin-top:40px">
+  <div class="result-icon">✅</div>
+  <div>
+    <div class="result-title">Что установлено и готово</div>
+    <div class="result-text">
+      <span class="pill h" style="margin-right:8px;margin-bottom:6px;display:inline-flex">● HyperFrames MCP</span>
+      <span class="pill r" style="margin-right:8px;margin-bottom:6px;display:inline-flex">● Remotion CLI</span>
+      <span class="pill g" style="margin-right:8px;margin-bottom:6px;display:inline-flex">● 11 Remotion Skills</span>
+      <span class="pill w" style="display:inline-flex">● ffmpeg (нужен)</span>
+      <br><br>
+      HyperFrames работает прямо в Claude.ai — пиши промпт и получай видео.<br>
+      Remotion готов локально — Claude пишет код, ты рендеришь через <code style="font-family:var(--mono);font-size:12px;color:var(--r)">npx remotion render</code>.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <b>MDTSynaps · Video Factory</b> · Remotion + HyperFrames Guide · 2026<br>
+  remotion.dev · hyperframes.heygen.com · claude.ai
+</footer>
+
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Smooth highlight on anchor
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      target.style.transition = 'background .3s';
+      target.style.background = 'rgba(0,212,170,.04)';
+      setTimeout(() => target.style.background = '', 1200);
+    }
+  });
+});
+</script>
+</body>
+</html>
